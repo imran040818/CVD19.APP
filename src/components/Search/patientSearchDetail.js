@@ -51,6 +51,8 @@ const getConfiguredColumns =(props) =>{
             );
           }
     },
+  { field: 'RegistrationId', headerName: 'Reg No', sortable:false , width:200},
+  { field: 'Photo', headerName: 'Photo', sortable:false , width:150},
   { field: 'Name', headerName: 'Name', sortable:false , width:150},
   { field: 'Age', headerName: 'Age', width:80},
   { 
@@ -64,8 +66,32 @@ const getConfiguredColumns =(props) =>{
   { field: 'Village', headerName: 'Village' , width:130},
   { field: 'District', headerName: 'District', width:130 },
   { field: 'MobileNo', headerName: 'Mobile', width:130 },
-  { field: 'AltMobileNo', headerName: 'Alt Mobile No', width:130 }
- 
+  { field: 'AltMobileNo', headerName: 'Alt Mobile No', width:130 },
+  { field: 'PatientComorbidity', headerName: 'Comorbidity', sortable:false , width:150, renderCell: (params)=>{
+    const comorbidity = params.getValue('PatientComorbidity');
+    if(comorbidity=== null || comorbidity === undefined)
+    {
+        return ''
+    }
+    let detail = '';
+    if(comorbidity.IsDiabetic){
+        detail+='Diabetic ';
+    }
+    if(comorbidity.IsAsthamatic){
+        detail+='Asthamatic ';
+    }
+    if(comorbidity.IsCardiac){
+        detail+='Cardiac ';
+    }
+    if(comorbidity.IsHypertension){
+        detail+='Hypertension ';
+    }
+    if(comorbidity.IsOther){
+        detail+='Other: ';
+        detail+=comorbidity.Detail
+    }
+    return <textarea  readOnly style={{wrap:'hard', overflowY:'scroll', height:60}} value={detail}></textarea>
+  }}
 ];
 }
 

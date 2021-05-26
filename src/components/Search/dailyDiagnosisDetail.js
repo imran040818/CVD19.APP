@@ -35,10 +35,14 @@ const getConfiguredColumns = (props)=>{ return [
   { field: 'Spo2', headerName: 'Spo2', width: 90 },
   { field: 'Temp', headerName: 'Temp', width: 90 },
   { field: 'Weight', headerName: 'Weight', width: 100 },
-  { field: 'Medicine', headerName: 'Medicine', width: 300,renderCell:(params)=><textarea  readOnly style={{wrap:'hard', overflowY:'scroll', height:60}} value={params.getValue('Medicine')}></textarea> },
+  { field: 'O2Needed', headerName: 'O2Needed', width: 150 },
+  { field: 'BMP', headerName: 'BMP', width: 150 },
+  { field: 'Medicine', headerName: 'Medicine', width: 300,renderCell:(params)=><textarea  readOnly style={{wrap:'hard', overflowY:'scroll', height:60, width:'100%'}} value={params.getValue('Medicine')}></textarea> },
+  { field: 'Advice', headerName: 'Advice', width: 300,renderCell:(params)=><textarea  readOnly style={{wrap:'hard', overflowY:'scroll', height:60, width:'100%'}} value={params.getValue('Advice')}></textarea> },
   { field: 'Cpr', headerName: 'CRP', width: 130 },
   { field: 'Ddimer', headerName: 'D-Dimer', width: 130 },
-{ field: 'Remark', headerName: 'Remark', width: 200, renderCell:(params)=><textarea  readOnly style={{wrap:'hard', overflowY:'scroll', height:60}} value={params.getValue('Remark')}></textarea> },
+  { field: 'Other', headerName: 'Other', width: 300,renderCell:(params)=><textarea  readOnly style={{wrap:'hard', overflowY:'scroll', height:60, width:'100%'}} value={params.getValue('Other')}></textarea> },
+{ field: 'Remark', headerName: 'Remark', width: 200, renderCell:(params)=><textarea  readOnly style={{wrap:'hard', overflowY:'scroll', height:60, width:'100%'}} value={params.getValue('Remark')}></textarea> },
 ]};
 
 export default function DailyDiagnosisDetail(props) {

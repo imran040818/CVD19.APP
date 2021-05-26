@@ -1,4 +1,4 @@
-import { searchPatients, viewPatients,populatePatientNames,addPatient,updatePatient,deletePatient, getAllPatients  } from '../services/patientService';
+import { searchPatients, viewPatients,addPatient,updatePatient,deletePatient, uploadPhoto,getAllPatients  } from '../services/patientService';
 
 import {
     ADD_PATIENT,
@@ -8,18 +8,18 @@ import {
     VIEW_PATIENT,
     LOADING_COMPLETE,
     LOADING_STARTED,
-    POPULATE_PATIENTS,
     MODAL_CLOSE,
     ERROR_MODEL_OPEN,
-    ALL_PATIENT
+    ALL_PATIENT,
+    UPLOAD_PATIENT_PHOTO,
 } from './actionConstants';
 
-export const getPatients = (token) => {
+export const getPatients = (token, regNo, filterType, startIndex, count) => {
   return async function(dispatch){
     dispatch({
       type:LOADING_STARTED
     });
-    var response = await getAllPatients(token);
+    var response = await getAllPatients(regNo,filterType,startIndex,count,token);
     dispatch({
       type:ALL_PATIENT,
       payload: response
@@ -29,45 +29,36 @@ export const getPatients = (token) => {
     });
 }
 }
-export const populatePatientName = (token) => {
-    return async function(dispatch){
-      dispatch({
-        type:LOADING_STARTED
-      });
-      var response = await populatePatientNames(token);
-      dispatch({
-        type:POPULATE_PATIENTS,
-        payload: response
-      });
-      dispatch({
-        type:LOADING_COMPLETE
-      });
-  }
-}
 
-export const searchPatientsByName = (name, token) => {
+export const searchPatientsByName = (name,regNo, token) => {
     return async function(dispatch){
       dispatch({
         type:LOADING_STARTED
       });
-      var response = await searchPatients(name, token);
-      console.log(response);
+      var response = await searchPatients(name,regNo, token);
+      if(response.error === null){
       dispatch({
         type:SEARCH_PATIENT,
         payload: response
       });
+      } else {
+        dispatch({
+          type:ERROR_MODEL_OPEN,
+          payload: {errorMessage: response.error}
+        });
+      }
       dispatch({
         type:LOADING_COMPLETE
       });
     }
 }
 
-export const viewPatientsById = (id, token) => {
+export const viewPatientsById = (id,regNo, token) => {
     return async function(dispatch){
       dispatch({
         type:LOADING_STARTED
       });
-      var response = await viewPatients(id, token);
+      var response = await viewPatients(id,regNo, token);
       dispatch({
         type:VIEW_PATIENT,
         payload: response
@@ -84,22 +75,20 @@ export const addPatientData = (patient, token) => {
       type:LOADING_STARTED
     });
     var response = await addPatient(patient, token);
-    if(response.error === ''){
+    if(response.error === null){
       dispatch({
         type:ADD_PATIENT,
         payload: response
       });
+      dispatch({
+        type:MODAL_CLOSE,
+      });
     } else {
       dispatch({
         type:ERROR_MODEL_OPEN,
-        payload: {errorMessage: {validationError : response?.error?.response?.data?.ValidationError, message: response?.error?.response?.data?.ErrorMessage}}
+        payload: {errorMessage: response.error}
       });
     }
-    if(response.error !== '' || response.error !== ' '){
-        dispatch({
-          type:MODAL_CLOSE,
-        });
-        }
       dispatch({
         type:LOADING_COMPLETE
       });
@@ -112,22 +101,20 @@ export const updatePatientData = (patient, token) => {
       type:LOADING_STARTED
     });
     var response = await updatePatient(patient, token);
-    if(response.error === ''){
+    if(response.error === null){
       dispatch({
         type:UPDATE_PATIENT,
         payload: response
       });
+      dispatch({
+        type:MODAL_CLOSE,
+      });
     } else {
       dispatch({
         type:ERROR_MODEL_OPEN,
-        payload: {errorMessage: {validationError : response?.error?.response?.data?.ValidationError, message: response?.error?.response?.data?.ErrorMessage}}
+        payload: {errorMessage: response.error}
       });
     }
-    if(response.error !== '' || response.error !== ' '){
-        dispatch({
-          type:MODAL_CLOSE,
-        });
-        }
       dispatch({
         type:LOADING_COMPLETE
       });
@@ -140,22 +127,36 @@ export const deletePatientData = (id, token) => {
       type:LOADING_STARTED
     });
     var response = await deletePatient(id, token);
-    if(response.error === ''){
+    if(response.error === null){
       dispatch({
         type:DELETE_PATIENT,
         payload: response
       });
-    } else {
-      dispatch({
-        type:ERROR_MODEL_OPEN,
-        payload: {errorMessage: {validationError : response?.error?.response?.data?.ValidationError, message: response?.error?.response?.data?.ErrorMessage}}
-      });
-    }
-  if(response.error !== '' || response.error !== ' '){
       dispatch({
         type:MODAL_CLOSE,
       });
-      }
+    } else {
+      dispatch({
+        type:ERROR_MODEL_OPEN,
+        payload: {errorMessage: response.error}
+      });
+    }
+    dispatch({
+      type:LOADING_COMPLETE
+    });
+  }
+}
+
+export const uploadPatientPhoto = (files,token)=>{
+  return async function(dispatch){
+    dispatch({
+      type:LOADING_STARTED
+    });
+    var response = await uploadPhoto(files,token);
+    dispatch({
+      type:UPLOAD_PATIENT_PHOTO,
+      payload: response
+    });
     dispatch({
       type:LOADING_COMPLETE
     });

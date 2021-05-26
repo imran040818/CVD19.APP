@@ -159,7 +159,7 @@ const rows = [];
 
 for (let i = 0; i < 10; i += 1) {
   const randomSelection = sample[Math.floor(Math.random() * sample.length)];
-  console.log(randomSelection)
+  //console.log(randomSelection)
   rows.push(createData(i, ...randomSelection));
 }
 

@@ -7,6 +7,8 @@ import { useState } from 'react';
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { addAdmission, updateAdmission } from '../../../../actions/admission';
+import Checkbox from '@material-ui/core/Checkbox';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -54,6 +56,18 @@ export default function Admission(props) {
         <TextField id="Result" label="BedNo*" value={admission.BedNo} onChange={(e)=>changeHandler('BedNo',e.currentTarget.value)}/>
         <TextField id="DischargeDate" label="DischargeDate" type="date" defaultValue={admission.DischargeDate} 
         className={classes.textField} InputLabelProps={{shrink: true}} onChange={(e)=>changeHandler('DischargeDate',e.currentTarget.value)}/>
+       
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={admission.IsReferred}
+            onChange={(e)=>changeHandler('IsReferred',e.currentTarget.checked)}
+            name="isReferred"
+            color="primary"
+          />
+        }
+        label="IsReferred"
+      />
         <TextareaAutosize
         id="Remark" rowsMin={3} aria-label="Remark" placeholder="Remark" defaultValue={admission.Remark} onChange={(e)=>changeHandler('Remark',e.currentTarget.value)}/>
         <Button variant="contained" color="primary" onClick={onSubmit}>Save</Button>

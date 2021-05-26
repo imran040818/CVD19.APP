@@ -4,7 +4,6 @@ import {
     UPDATE_PATIENT,
     SEARCH_PATIENT,
     VIEW_PATIENT,
-    POPULATE_PATIENTS,
     CLEAR_SEARCH_PATIENT,
 
     ADD_INITIAL_DIAGNOSIS,
@@ -18,7 +17,7 @@ import {
     ADD_ADMISSION,
     DELETE_ADMISSION,
     UPDATE_ADMISSION,
-
+    SET_SEARCH,
     ERROR_MODAL_CLOSE
 
 } from '../actions/actionConstants';
@@ -27,6 +26,7 @@ import {
 export const patient = (state = { 
         selectedPatientId : null,
         //searchText:{Title:'', Id:''},
+        searchText:'',
         dailyDiagnoses:[],
         initialDiagnoses:[],
         admissions:[],
@@ -35,10 +35,17 @@ export const patient = (state = {
         displayPatientInfo:false,
         displaySearchResult :false,
         isOpenErrorModal: false,
-        errorMessage: ''
+        errorMessage: '',
+        regNo:''
      }, action) => {
 
     switch (action.type) {
+        case SET_SEARCH:
+            //console.log(state)
+            return{
+                ...state,
+                searchText: action.payload
+            }
         case CLEAR_SEARCH_PATIENT:
             return{
                 ...state,
@@ -47,15 +54,6 @@ export const patient = (state = {
                // searchText:{Title:'', Id:''},
                searchText:''
             };  
-        case POPULATE_PATIENTS:
-            const newList = new Array();
-                action.payload?.data?.map((value, _)=>{
-                    newList.push({Title: value.Title, Id:value.Id })
-                })
-                return{
-                    ...state,
-                    searchList: newList??[]
-                }; 
             case SEARCH_PATIENT:
                 // const searchData = action.payload.data!==null && action.payload.data !== undefined
                 // && action.payload.data.length > 0  ? {Title:action.payload.data[0]?.Name} : '';// {Title:action.payload.data[0]?.Name, Id:action.payload.data[0]?.Id} : {Title:'', Id:''};
@@ -67,6 +65,7 @@ export const patient = (state = {
                        // searchText: searchData, 
                     };    
         case VIEW_PATIENT:
+            //console.log(action.payload)
             return{
                 ...state,
                 selectedPatientId:action.payload.data.PatientId,
@@ -112,7 +111,7 @@ export const patient = (state = {
             return{
                 ...state,
                 searchedPatients:updatedsearchedPatients,
-                searchText:{Title:action.payload.data.Name, Id:action.payload.data.Id},
+                searchText:action.payload.data.Name,
                 searchList:updatedsearchList,
                 selectedPatientId:action.payload.data.Id
             }; 
@@ -120,7 +119,9 @@ export const patient = (state = {
         case DELETE_PATIENT:
             {
             const updatedsearchedPatients =[... state.searchedPatients]
-                let data = updatedsearchedPatients.filter(f=>f.Id==state.selectedPatientId)?.[0];
+            //console.log(state.selectedPatientId);
+
+                let data = updatedsearchedPatients.filter(f=>f.Id === state.selectedPatientId)?.[0];
                 let index = updatedsearchedPatients.indexOf(data);
                 if(index>=0){
                     updatedsearchedPatients.splice(index,1);
@@ -134,9 +135,10 @@ export const patient = (state = {
             return{
                 ...state,
                 searchedPatients:updatedsearchedPatients,
-                searchText:{Title:'', Id:''},
+                searchText:'',
                 searchList:updatedsearchList,
-                selectedPatientId:undefined
+                selectedPatientId:undefined,
+                displayPatientInfo:false
             }; 
             }
         case ADD_INITIAL_DIAGNOSIS:

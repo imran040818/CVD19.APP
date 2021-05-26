@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { DEFAULT_API_URL } from './apiUrl';
-import { getData } from './apiResponse';
+import { getResponseData, getError } from './apiResponse';
 
 new axios
 let headers = {
@@ -31,24 +31,28 @@ export const get = async(url, data, token) => {
         const response = await axios.get(url, {
             headers
         });
-        responseData = getData(response);
+        responseData = getResponseData(response);
     } catch (error) {
-        responseData.error = error;
+        responseData = getError(error);
     }
     return responseData;
 }
 
-export const post = async (url, data,token) => {
+export const post = async (url, data,token,param=null, contentType='application/json; charset=utf-8') => {
     url = DEFAULT_API_URL + url;
+    url = formatUrl(url, param);
     var responseData = {data: null, error: '' };
     try {
+        headers['Content-Type']=contentType;
         headers.Authorization ='Bearer '+token;
         const response =  await axios.post(url, JSON.stringify(data), {
             headers
         });
-        responseData = getData(response);
+        console.log(response);
+
+        responseData = getResponseData(response);
     } catch (error) {
-        responseData.error = error;
+        responseData = getError(error);
     }
     return responseData;
 }
@@ -62,9 +66,9 @@ export const del = async (url, data,token) => {
         const response =  await axios.delete(url, {
             headers
         });
-        responseData = getData(response);
+        responseData = getResponseData(response);
     } catch (error) {
-        responseData.error = error;
+        responseData = getError(error);
     }
     return responseData;
 }

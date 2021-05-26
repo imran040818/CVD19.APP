@@ -7,8 +7,9 @@ import Grid from '@material-ui/core/Grid';
 import Button from "@material-ui/core/Button";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
+import { useState } from "react";
 import { searchPatientsByName, viewPatientsById, addPatientData, updatePatientData, deletePatientData } from '../../actions/patient';
-import { CLEAR_SEARCH_PATIENT , MODAL_OPEN} from '../../actions/actionConstants'
+import { MODAL_OPEN} from '../../actions/actionConstants'
 import Header from '../Shared/headerComponent';
 import Footer from '../Shared/footerComponent';
 import ModalPopup from '../Shared/modalPopup';
@@ -16,7 +17,9 @@ import ErrorPopup from '../Shared/errorPopup';
 import Loader from '../Shared/loader';
 import IconButton from '@material-ui/core/IconButton';
 import Add from '@material-ui/icons/Add';
-import { populatePatientName } from '../../actions/patient'
+import InputLabel from '@material-ui/core/InputLabel';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -27,40 +30,44 @@ const useStyles = makeStyles((theme) => ({
   },
   search:{
       textAlign:'center',
-      paddingTop: 40,
-  }
+      paddingTop: 50,
+      paddingLeft:'0!important',
+      marginLeft:'0!important',
+  },
+  formControl: {
+    margin: theme.spacing(1),
+    minWidth: '60%',
+  },
 }));
 
 
 export default function Search(props) {
     const dispatch = useDispatch();
     const classes = useStyles();
-    const {auth} = useSelector(state => state);
+    const [regNo,handleRegNo] = useState("1");
+    const {auth, patient} = useSelector(state => state);
     const { searchList, searchText, searchedPatients, dailyDiagnoses, initialDiagnoses, admissions, displayPatientInfo, displaySearchResult, selectedPatientId } = useSelector(state => state.patient);
 
-    let timer  = undefined;
     const searchPatientByName = (name) => {
-        clearTimeout(timer);
-        timer  = setTimeout(function(){
-            if(name !== ""){
-                dispatch(searchPatientsByName(name, auth.tokenId));
-            }
-        },1000);
-        if(name === "" || name === " "){
-            dispatch({
-                type:CLEAR_SEARCH_PATIENT
-            });
+        const regKey = regNo === "1" ? 'TN' : 'CCC';
+        //console.log(regKey);
+        dispatch(searchPatientsByName(name,regKey, auth.tokenId));
+    }
+
+    const handleOrgChange = (value) =>{
+        handleRegNo(value);
+        if(patient.searchText !== ""){
+            const regKey = value === "1" ? 'TN' : 'CCC';
+            
+            dispatch(searchPatientsByName(patient.searchText,regKey, auth.tokenId));
         }
     }
-
-    const loadPatients =() =>{
-        dispatch(populatePatientName())
-    }
-
     const viewPatient = (data) => {
-        dispatch(viewPatientsById(data.Id,auth.tokenId));
+
+        const regKey = regNo === "1" ? 'TN' : 'CCC';
+        dispatch(viewPatientsById(data.Id,regKey,auth.tokenId));
     }
-    const addPatient =(data)=>{
+    const addPatient =()=>{
         dispatch(
             {
                 type: MODAL_OPEN,
@@ -68,15 +75,42 @@ export default function Search(props) {
                 {
                  resourceName : 'patient',
                  operationName: 'New Patient',
-                 popupWidth:300,
+                 popupWidth:400,
                  popupHeight:500,
-                 data: { Id:undefined, Name:'', Age:20, Sex:'2', RelationOf:'', Village:'', District:'', MobileNo:'', AltMobileNo:'', UserCreated: auth.loggedInUser }
+                 data: { 
+                    Id:undefined, Name:'', Age:20, Sex:'2', RelationOf:'',
+                    Village:'', District:'', MobileNo:'', AltMobileNo:'', UserCreated: auth.loggedInUser,
+                    Photo:'',
+                    RegistrationId:'',
+                    RegNo:regNo,
+                    File:null,
+                    O2Needed:'',
+                    BMP:'',
+                    PatientComorbidity:{
+                        IsDiabetic:false,
+                        IsAsthamatic:false,
+                        IsCardiac:false,
+                        IsHypertension:false,
+                        IsOther:false,
+                        Detail:''
+                    } }
                 },
             });
     }
 
     const editPatient = (data) => {
-        dispatch({type: MODAL_OPEN, payload: {  resourceName : 'patient',  popupWidth:300,
+        if(data.PatientComorbidity === undefined || data.PatientComorbidity === null){
+            data.File=null;
+            data.PatientComorbidity={
+                IsDiabetic:false,
+                IsAsthamatic:false,
+                IsCardiac:false,
+                IsHypertension:false,
+                IsOther:false,
+                Detail:''
+            } 
+        }
+        dispatch({type: MODAL_OPEN, payload: {  resourceName : 'patient',  popupWidth:400,
         popupHeight:500 ,operationName: 'Edit Patient', data: data}})
     }
 
@@ -158,13 +192,34 @@ export default function Search(props) {
         <div>
             <Header {...props}/>
                 <div className={classes.root}>
-                    <Grid container spacing={1}>
+                    <Grid container spacing={0}>
                         <Grid item xs={12}>
                             <div className={classes.search}>
                             <Grid container spacing={0}>
-                                <Grid item xs={11}>
-                                    <PatientSearch searchList={searchList} onSearch={searchPatientByName} searchText={searchText}
-                                    loadPatients={loadPatients}/>
+                                <Grid item xs={4}>
+                                    <FormControl className={classes.formControl}>
+                                        <InputLabel htmlFor="age-native-simple">Organization</InputLabel>
+                                        <Select
+                                        native
+                                        value={regNo}
+                                        onChange={(e)=>
+                                        {
+                                            //console.log(e.currentTarget.value);
+                                            handleOrgChange(e.currentTarget.value)
+                                        }
+                                        }
+                                        inputProps={{
+                                            name: 'organizarion',
+                                            id: 'org',
+                                        }}
+                                        >
+                                        <option value={1}>TN</option>
+                                        <option value={2}>CCC</option>
+                                        </Select>
+                                    </FormControl>
+                                </Grid>
+                                <Grid item xs={7}>
+                                    <PatientSearch searchList={searchList} onSearch={searchPatientByName} searchText={searchText}/>
                                 </Grid>
                                 <Grid item xs={1}>
                                 <label htmlFor="icon-button-file">

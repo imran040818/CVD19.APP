@@ -35,6 +35,7 @@ const getConfiguredColumns = (props)=>{ return [
   { field: 'RoomNo', headerName: 'Room No', width: 120 },
   { field: 'BedNo', headerName: 'Bed No', width: 120 },
   { field: 'DischargeDate', headerName: 'Discharge Date', width: 160 },
+  { field: 'IsReferred', headerName: 'IsReferred', width: 160, renderCell:(params)=><input type='checkbox'  readOnly checked={params.getValue('IsReferred')}/> },
   { field: 'Remark', headerName: 'Remark', width: 200, renderCell:(params)=><textarea  readOnly style={{wrap:'hard', overflowY:'scroll', height:60}} value={params.getValue('Remark')}></textarea>  },
 ]};
 

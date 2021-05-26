@@ -17,22 +17,20 @@ export const addDailyDiagnosis = (dailyDiagnosis, token) => {
         });
         var response = await addDailyDiagnosisData(dailyDiagnosis, token);
         
-        if(response.error === ''){
+        if(response.error === null){
           dispatch({
             type:ADD_DAILY_DIAGNOSIS,
             payload: response
           });
-        } else {
-          dispatch({
-            type:ERROR_MODEL_OPEN,
-            payload: {errorMessage: {validationError : response?.error?.response?.data?.ValidationError, message: response?.error?.response?.data?.ErrorMessage}}
-          });
-        }
-      if(response.error !== '' || response.error !== ' '){
           dispatch({
             type:MODAL_CLOSE,
           });
-          }
+        } else {
+          dispatch({
+            type:ERROR_MODEL_OPEN,
+            payload: {errorMessage: response.error}
+          });
+        }
         dispatch({
           type:LOADING_COMPLETE
         });
@@ -45,23 +43,21 @@ export const updateDailyDiagnosis = (dailyDiagnosis, token) => {
           type:LOADING_STARTED
         });
         var response = await updateDailyDiagnosisData(dailyDiagnosis, token);
-        if(response.error === ''){
+        if(response.error === null){
           dispatch({
             type:UPDATE_DAILY_DIAGNOSIS,
             payload: response
           });
-        } else {
-          dispatch({
-            type:ERROR_MODEL_OPEN,
-            payload: {errorMessage: {validationError : response?.error?.response?.data?.ValidationError, message: response?.error?.response?.data?.ErrorMessage}}
-          });
-        }
-       
-      if(response.error !== '' || response.error !== ' '){
           dispatch({
             type:MODAL_CLOSE,
           });
-          }
+        } else {
+          dispatch({
+            type:ERROR_MODEL_OPEN,
+            payload: {errorMessage: response.error}
+          });
+        }
+       
         dispatch({
           type:LOADING_COMPLETE
         });
@@ -74,22 +70,20 @@ export const deleteDailyDiagnosis = (id, token) => {
           type:LOADING_STARTED
         });
         var response = await deleteDailyDiagnosisData(id, token);
-        if(response.error === ''){
+        if(response.error === null){
           dispatch({
             type:DELETE_DAILY_DIAGNOSIS,
             payload: response
           });
-        } else {
-          dispatch({
-            type:ERROR_MODEL_OPEN,
-            payload: {errorMessage: {validationError : response?.error?.response?.data?.ValidationError, message: response?.error?.response?.data?.ErrorMessage}}
-          });
-        }
-      if(response.error !== '' || response.error !== ' '){
           dispatch({
             type:MODAL_CLOSE,
           });
-          }
+        } else {
+          dispatch({
+            type:ERROR_MODEL_OPEN,
+            payload: {errorMessage: response.error}
+          });
+        }
         dispatch({
           type:LOADING_COMPLETE
         });

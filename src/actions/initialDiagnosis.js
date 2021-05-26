@@ -16,22 +16,20 @@ export const addInitialDiagnosis = (initialDiagnosis, token) => {
       type:LOADING_STARTED
     });
     var response = await addInitialDiagnosisData(initialDiagnosis, token);
-    if(response.error === ''){
+    if(response.error === null){
       dispatch({
         type:ADD_INITIAL_DIAGNOSIS,
         payload: response
       });
-    } else {
-      dispatch({
-        type:ERROR_MODEL_OPEN,
-        payload: {errorMessage: {validationError : response?.error?.response?.data?.ValidationError, message: response?.error?.response?.data?.ErrorMessage}}
-      });
-    }
-  if(response.error !== '' || response.error !== ' '){
       dispatch({
         type:MODAL_CLOSE,
       });
-      }
+    } else {
+      dispatch({
+        type:ERROR_MODEL_OPEN,
+        payload: {errorMessage: response.error}
+      });
+    }
     dispatch({
       type:LOADING_COMPLETE
     });
@@ -45,22 +43,20 @@ export const updateInitialDiagnosis = (initialDiagnosis, token) => {
     });
     var response = await updateInitialDiagnosisData(initialDiagnosis, token);
     
-    if(response.error === ''){
+    if(response.error === null){
       dispatch({
         type:UPDATE_INITIAL_DIAGNOSIS,
         payload: response
       });
-    } else {
-      dispatch({
-        type:ERROR_MODEL_OPEN,
-        payload: {errorMessage: {validationError : response?.error?.response?.data?.ValidationError, message: response?.error?.response?.data?.ErrorMessage}}
-      });
-    }
-  if(response.error !== '' || response.error !== ' '){
       dispatch({
         type:MODAL_CLOSE,
       });
-      }
+    } else {
+      dispatch({
+        type:ERROR_MODEL_OPEN,
+        payload: {errorMessage: response.error}
+      });
+    }
     dispatch({
       type:LOADING_COMPLETE
     });
@@ -73,23 +69,21 @@ export const deleteInitialDiagnosis = (id, token) => {
       type:LOADING_STARTED
     });
     var response = await deleteInitialDiagnosisData(id, token);
-    if(response.error === ''){
+    if(response.error === null){
       dispatch({
         type:DELETE_INITIAL_DIAGNOSIS,
         payload: response
       });
+      dispatch({
+        type:MODAL_CLOSE,
+      });
     } else {
       dispatch({
         type:ERROR_MODEL_OPEN,
-        payload: {errorMessage: {validationError : response?.error?.response?.data?.ValidationError, message: response?.error?.response?.data?.ErrorMessage}}
+        payload: {errorMessage: response.error}
       });
     }
    
-  if(response.error !== '' || response.error !== ' '){
-    dispatch({
-      type:MODAL_CLOSE,
-    });
-    }
     dispatch({
       type:LOADING_COMPLETE
     });

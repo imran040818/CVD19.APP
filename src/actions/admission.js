@@ -17,22 +17,20 @@ export const addAdmission = (admission, token) => {
         });
         var response = await addAdmissionData(admission, token);
        
-        if(response.error === ''){
+        if(response.error === null){
           dispatch({
             type:ADD_ADMISSION,
             payload: response
           });
-        } else {
-          dispatch({
-            type:ERROR_MODEL_OPEN,
-            payload: {errorMessage: {validationError : response?.error?.response?.data?.ValidationError, message: response?.error?.response?.data?.ErrorMessage}}
-          });
-        }
-       if(response.error !== '' || response.error !== ' '){
           dispatch({
             type:MODAL_CLOSE,
           });
-          }
+        } else {
+          dispatch({
+            type:ERROR_MODEL_OPEN,
+            payload: {errorMessage: response.error}
+          });
+        }
         dispatch({
           type:LOADING_COMPLETE
         });
@@ -46,22 +44,20 @@ export const updateAdmission = (admission, token) => {
         });
         var response = await updateAdmissionData(admission, token);
       
-        if(response.error === ''){
+        if(response.error === null){
           dispatch({
             type:UPDATE_ADMISSION,
             payload: response
           });
-        } else {
-          dispatch({
-            type:ERROR_MODEL_OPEN,
-            payload: {errorMessage: {validationError : response?.error?.response?.data?.ValidationError, message: response?.error?.response?.data?.ErrorMessage}}
-          });
-        }
-       if(response.error !== '' || response.error !== ' '){
           dispatch({
             type:MODAL_CLOSE,
           });
-          }
+        } else {
+          dispatch({
+            type:ERROR_MODEL_OPEN,
+            payload: {errorMessage: response.error}
+          });
+        }
         dispatch({
           type:LOADING_COMPLETE
         });
@@ -75,22 +71,20 @@ export const deleteAdmission = (id, token) => {
         });
         var response = await deleteAdmissionData(id, token);
       
-        if(response.error === ''){
+        if(response.error === null){
           dispatch({
             type:DELETE_ADMISSION,
             payload: response
           });
-        } else {
-          dispatch({
-            type:ERROR_MODEL_OPEN,
-            payload: {errorMessage: {validationError : response?.error?.response?.data?.ValidationError, message: response?.error?.response?.data?.ErrorMessage}}
-          });
-        }
-        if(response.error !== '' || response.error !== ' '){
           dispatch({
             type:MODAL_CLOSE,
           });
-          }
+        } else {
+          dispatch({
+            type:ERROR_MODEL_OPEN,
+            payload: {errorMessage: response.error}
+          });
+        }
         dispatch({
           type:LOADING_COMPLETE
         });

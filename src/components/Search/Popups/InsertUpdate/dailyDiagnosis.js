@@ -51,16 +51,22 @@ export default function DailyDiagnosis(props) {
         <TextField id="DiagnosisDate*" label="DiagnosisDate" type="datetime-local" defaultValue={dailyDiagnosis.DiagnosisDate ?? '0000-00-00'} 
         className={classes.textField} InputLabelProps={{shrink: true}} onChange={(e)=>changeHandler('DiagnosisDate',e.currentTarget.value)}/>
 
-        <TextField id="Spo2" label="Spo2*" value={dailyDiagnosis.Spo2} onChange={(e)=>changeHandler('Spo2',e.currentTarget.value)}/>
-        <TextField id="Temp" label="Temp*" value={dailyDiagnosis.Temp} onChange={(e)=>changeHandler('Temp',e.currentTarget.value)}/>
-        <TextField id="Weight" label="Weight*" value={dailyDiagnosis.Weight} onChange={(e)=>changeHandler('Weight',e.currentTarget.value)}/>
-        
-        <TextField id="Cpr" label="CRP" value={dailyDiagnosis.Cpr} onChange={(e)=>changeHandler('Cpr',e.currentTarget.value)}/>
-        <TextField id="Ddimer" label="Ddimer" value={dailyDiagnosis.Ddimer} onChange={(e)=>changeHandler('Ddimer',e.currentTarget.value)}/>
-
-
+        <TextField id="Spo2" label="Spo2" value={dailyDiagnosis.Spo2?.trim()} onChange={(e)=>changeHandler('Spo2',e.currentTarget.value)}/>
+        <TextField id="Temp" label="Temp" value={dailyDiagnosis.Temp?.trim()} onChange={(e)=>changeHandler('Temp',e.currentTarget.value)}/>
+        <TextField id="O2Needed" label="O2Needed" value={dailyDiagnosis.O2Needed?.trim()} onChange={(e)=>changeHandler('O2Needed',e.currentTarget.value)}/>
+        <TextField id="BMP" label="BMP" value={dailyDiagnosis.BMP?.trim()} onChange={(e)=>changeHandler('BMP',e.currentTarget.value)}/>
+        <TextField id="Weight" label="Weight" value={dailyDiagnosis?.Weight.trim()} onChange={(e)=>changeHandler('Weight',e.currentTarget.value)}/>
         <TextareaAutosize
         id="Medicine" rowsMin={5} aria-label="Medicine" placeholder="Medicine" defaultValue={dailyDiagnosis.Medicine} onChange={(e)=>changeHandler('Medicine',e.currentTarget.value)}/>
+     
+     <TextareaAutosize
+        id="Advice" rowsMin={5} aria-label="Advice" placeholder="Advice" defaultValue={dailyDiagnosis.Advice} onChange={(e)=>changeHandler('Advice',e.currentTarget.value)}/>
+     
+     <TextField id="Cpr" label="CRP" value={dailyDiagnosis.Cpr} onChange={(e)=>changeHandler('Cpr',e.currentTarget.value)}/>
+        <TextField id="Ddimer" label="Ddimer" value={dailyDiagnosis.Ddimer} onChange={(e)=>changeHandler('Ddimer',e.currentTarget.value)}/>
+
+        <TextareaAutosize
+        id="Other" rowsMin={5} aria-label="Other" placeholder="Other" defaultValue={dailyDiagnosis.Other} onChange={(e)=>changeHandler('Other',e.currentTarget.value)}/>
      
         <TextareaAutosize
         id="Remark" rowsMin={5} aria-label="Remark" placeholder="Remark" defaultValue={dailyDiagnosis.Remark} onChange={(e)=>changeHandler('Remark',e.currentTarget.value)}/>

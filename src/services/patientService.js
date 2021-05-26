@@ -1,20 +1,17 @@
 import {get, post, del} from '../utilities/api';
-import {PATIENT_NAMES,PATIENT_SAVE,PATIENT_UPDATE,PATIENT_DELETE, PATIENT_GET_BY_NAME, PATIENT_GET_BY_ID, PATIENTS_ALL} from '../utilities/apiUrl';
+import {PATIENT_SAVE,PATIENT_UPDATE,PATIENT_DELETE,PATIENT_UPLOAD_PHOTO, PATIENT_GET_BY_NAME, PATIENT_GET_BY_ID, PATIENTS_ALL} from '../utilities/apiUrl';
 
-export const populatePatientNames = async (token) => {
-    return await get(PATIENT_NAMES,null,token);
+
+export const getAllPatients = async (regNo,filterType,startIndex,count,token) => {
+    return await get(PATIENTS_ALL,[regNo,filterType,startIndex,count],token);
 }
 
-export const getAllPatients = async (token) => {
-    return await get(PATIENTS_ALL,null,token);
+export const searchPatients = async (name,regNo,token) => {
+    return await get(PATIENT_GET_BY_NAME,[name,regNo],token);
 }
 
-export const searchPatients = async (name,token) => {
-    return await get(PATIENT_GET_BY_NAME,[name],token);
-}
-
-export const viewPatients = async (id,token) => {
-    return await get(PATIENT_GET_BY_ID, [id],token);
+export const viewPatients = async (id,regNo,token) => {
+    return await get(PATIENT_GET_BY_ID, [id,regNo],token);
 }
 
 export const addPatient = async (patient,token) => {
@@ -27,4 +24,7 @@ export const updatePatient = async (patient,token) => {
 
 export const deletePatient = async (id,token) => {
     return await del(PATIENT_DELETE, [id],token);
+}
+export const uploadPhoto = async (files,token) =>{
+    return await post(PATIENT_UPLOAD_PHOTO,files,token,null,'multipart/form-data');
 }

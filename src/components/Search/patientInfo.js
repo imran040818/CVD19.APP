@@ -50,6 +50,8 @@ export default function PatientInfo(props) {
                     Weight:'',
                     Medicine:'',
                     Remark: '',
+                    Advice:'',
+                    Other:'',
                     Cpr:'',
                     Ddimer:'',
                     PatientId:props.selectedPatientId,
@@ -97,6 +99,7 @@ export default function PatientInfo(props) {
                     RoomNo: '',
                     BedNo: '',
                     Remark:'',
+                    IsReferred:false,
                     PatientId:props.selectedPatientId,
                     UserCreated: props.userCreated
                     }
