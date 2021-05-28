@@ -40,7 +40,7 @@ export default function PatientInfo(props) {
                 {
                 resourceName : 'dailyDiagnosis',
                 operationName: 'New Daily Diagnosis',
-                popupWidth:300,
+                popupWidth:400,
                 popupHeight:500,
                 data: { 
                     Id:undefined,
@@ -68,7 +68,7 @@ export default function PatientInfo(props) {
                 {
                     resourceName : 'initialDiagnosis',
                     operationName: 'New Initial Diagnosis',
-                    popupWidth:300,
+                    popupWidth:400,
                     popupHeight:500,
                     data: { 
                     Id:undefined,
@@ -90,7 +90,7 @@ export default function PatientInfo(props) {
                 {
                     resourceName : 'admission',
                     operationName: 'New Admission',
-                    popupWidth:300,
+                    popupWidth:400,
                     popupHeight:500,
                     data: { 
                     Id:undefined,

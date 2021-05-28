@@ -40,9 +40,22 @@ export default function Patient(props) {
     const [open,handleOpen] = useState(false);
 
     const handleSave = (files) => {
+      const updatePatient = patient;   
       var formData = new FormData();
-      formData.file=files[0];
-      dispatch(uploadPatientPhoto(formData,tokenId))
+      
+      // formData.append( 
+      //   "file", 
+      //   files[0], 
+      //   files[0].name 
+      // );
+      formData.append('FileName', files[0].name );
+      formData.append('FormFile', files[0], files[0].name);
+      
+      // updatePatient["File"] = formData;
+      // setPatient({...updatePatient});
+      handleOpen(false);
+
+       dispatch(uploadPatientPhoto(formData,tokenId))
     }
     const changeHandler = (key,value)=>{
         const updatePatient = patient;   
@@ -57,11 +70,12 @@ export default function Patient(props) {
     }
     const onSubmit = (e) =>{
         e.preventDefault();
-        //console.log(e);
+        console.log(e);
         if(patient.Id === null || patient.Id === undefined){
           const regKey = patient.RegNo === "1" ? 'TN' : 'CCC';
           patient.RegNo = regKey;
           //console.log(regKey)
+         console.log( patient.keys);
           dispatch(addPatientData(patient,tokenId));
         } else {
           patient.UserModified=loggedInUser;
@@ -71,7 +85,7 @@ export default function Patient(props) {
   return (
     <Grid container spacing={0}>
         <Grid item xs={12}>
-          <form className={classes.root} noValidate autoComplete="off" >
+          <form className={classes.root} noValidate autoComplete="off">
           <FormControl>
               <InputLabel htmlFor="age-native-simple">Organization</InputLabel>
               <Select disabled={true}
@@ -86,6 +100,15 @@ export default function Patient(props) {
               <option value={"2"}>CCC</option>
               </Select>
           </FormControl>
+          <Button onClick={()=>handleOpen(true)} color='primary'>Select photo</Button>
+              <DropzoneDialog
+                  open={open}
+                  onSave={(e)=>handleSave(e)}
+                  acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
+                  showPreviews={true}
+                  maxFileSize={5000000}
+                  onClose={()=>handleOpen(false)}
+              /> 
           <TextField id="name" label="Name*" value={patient.Name} onChange={(e)=>changeHandler('Name',e.currentTarget.value)}/>
           <TextField id="age" label="Age*" value={patient.Age} onChange={(e)=>changeHandler('Age',e.currentTarget.value)}/>
           <FormLabel component="legend">Gender*</FormLabel>
@@ -162,17 +185,8 @@ export default function Patient(props) {
           defaultValue={patient.PatientComorbidity.Detail} onChange={(e)=>changeHandler('PatientComorbidity.Detail',e.currentTarget.value)}/>
           
 
-          <Button variant="contained" color="primary" onClick={onSubmit}>Save</Button>
+          <Button variant="contained" color="primary" onClick={(e)=>onSubmit(e)}>Save</Button>
       </form>
-          {/* <Button onClick={()=>handleOpen(true)} color='primary'>Select photo</Button>
-              <DropzoneDialog
-                  open={open}
-                  onSave={(e)=>handleSave(e)}
-                  acceptedFiles={['image/jpeg', 'image/png', 'image/bmp']}
-                  showPreviews={true}
-                  maxFileSize={5000000}
-                  onClose={()=>handleOpen(false)}
-              /> */}
         </Grid>
     </Grid>
   );

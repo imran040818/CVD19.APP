@@ -15,7 +15,7 @@ export const viewPatients = async (id,regNo,token) => {
 }
 
 export const addPatient = async (patient,token) => {
-    return await post(PATIENT_SAVE, patient,token);
+    return await post(PATIENT_SAVE, patient,token,null, 'multipart/form-data; boundary=l3iPy71otz');
 }
 
 export const updatePatient = async (patient,token) => {
@@ -26,5 +26,5 @@ export const deletePatient = async (id,token) => {
     return await del(PATIENT_DELETE, [id],token);
 }
 export const uploadPhoto = async (files,token) =>{
-    return await post(PATIENT_UPLOAD_PHOTO,files,token,null,'multipart/form-data');
+    return await post(PATIENT_UPLOAD_PHOTO,files,token,null, 'multipart/form-data; boundary=l3iPy71otz');
 }

@@ -130,7 +130,7 @@ export default function Search(props) {
     }
 
     const editDailyDiagnosis = (data)=>{
-        dispatch({type: MODAL_OPEN, payload: { resourceName : 'dailyDiagnosis', operationName: 'Edit Daily Daignosis', popupWidth:300,
+        dispatch({type: MODAL_OPEN, payload: { resourceName : 'dailyDiagnosis', operationName: 'Edit Daily Daignosis', popupWidth:400,
         popupHeight:500, data: data}})
     }
 
@@ -150,7 +150,7 @@ export default function Search(props) {
     }
 
     const editInitialDiagnosis = (data) =>{
-        dispatch({type: MODAL_OPEN, payload: { resourceName : 'initialDiagnosis',  popupWidth:300,
+        dispatch({type: MODAL_OPEN, payload: { resourceName : 'initialDiagnosis',  popupWidth:400,
         popupHeight:500, operationName: 'Edit Initial Daignosis', data: data}})
     }
 
@@ -170,7 +170,7 @@ export default function Search(props) {
     }
 
     const editAdmission =(data)=>{
-        dispatch({type: MODAL_OPEN, payload: { resourceName : 'admission', popupWidth:300,
+        dispatch({type: MODAL_OPEN, payload: { resourceName : 'admission', popupWidth:400,
         popupHeight:500, operationName: 'Edit Admission', data: data}})
     }
     const deleteAdmission = (data)=>{
